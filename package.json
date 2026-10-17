@@ -1,0 +1,17 @@
+{
+  "name": "english-12-quiz",
+  "version": "1.0.0",
+  "description": "English 12 Global Success - 15-minute Quiz (Units 1-2-3)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "uuid": "^10.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
