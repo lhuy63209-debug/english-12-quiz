@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>English 12 - Kiểm Tra 15 Phút | Global Success</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+  
+  <!-- Google Fonts: Inter & Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Animated Background Canvas & Glow Orbs -->
+  <canvas id="particles-canvas" class="particles-bg"></canvas>
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+  <div class="glow-orb orb-3"></div>
+  <div class="glow-orb orb-4"></div>
+
+  <!-- Confetti Canvas (for high scores) -->
+  <canvas id="confetti-canvas" class="confetti-canvas"></canvas>
+
+  <!-- Global Toast Notification Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- App Wrapper -->
+  <div id="app" class="app-wrapper">
+
+    <!-- ==============================================
+         VIEW 1: LOGIN SCREEN
+         ============================================== -->
+    <section id="view-login" class="view active-view">
+      <div class="login-container glass-card">
+        <!-- Decorative Floating Shapes -->
+        <div class="deco-icon deco-book" aria-hidden="true">📖</div>
+        <div class="deco-icon deco-star" aria-hidden="true">✨</div>
+        <div class="deco-icon deco-cap" aria-hidden="true">🎓</div>
+        <div class="deco-icon deco-pencil" aria-hidden="true">✏️</div>
+
+        <div class="login-header">
+          <div class="brand-badge">
+            <span class="badge-dot"></span>
+            <span>English 12 • Global Success</span>
+          </div>
+          <h1 class="gradient-title">📚 English 12 - Kiểm Tra 15 Phút</h1>
+          <p class="subtitle">Units 1-2-3 | Hệ thống ôn luyện & thi trắc nghiệm trực tuyến</p>
+        </div>
+
+        <form id="login-form" class="login-form" novalidate>
+          <div class="input-group">
+            <label for="student-name">
+              <span class="label-icon">👤</span> Họ và tên học sinh
+            </label>
+            <div class="input-wrapper">
+              <input 
+                type="text" 
+                id="student-name" 
+                name="name" 
+                class="glass-input" 
+                placeholder="Ví dụ: Nguyễn Văn An - 12A1" 
+                autocomplete="name" 
+                required
+              >
+              <span class="input-focus-border"></span>
+            </div>
+            <span class="field-error" id="name-error"></span>
+          </div>
+
+          <div class="input-group">
+            <label for="access-code">
+              <span class="label-icon">🔑</span> Mã truy cập làm bài
+            </label>
+            <div class="input-wrapper">
+              <input 
+                type="text" 
+                id="access-code" 
+                name="code" 
+                class="glass-input code-input" 
+                placeholder="Nhập mã do giáo viên cung cấp" 
+                autocomplete="off" 
+                required
+              >
+              <span class="input-focus-border"></span>
+            </div>
+            <span class="field-error" id="code-error"></span>
+          </div>
+
+          <!-- Alert / Error box -->
+          <div id="login-alert" class="alert-box hidden" role="alert">
+            <span class="alert-icon">⚠️</span>
+            <span class="alert-message" id="login-alert-msg"></span>
+          </div>
+
+          <button type="submit" id="btn-login" class="btn btn-primary btn-glow btn-block">
+            <span class="btn-text">Vào Làm Bài Thi</span>
+            <span class="btn-icon">🚀</span>
+            <span class="btn-spinner hidden"></span>
+          </button>
+        </form>
+
+        <div class="login-footer">
+          <div class="info-pill">
+            <span>⏱️ 15 phút mỗi đề</span>
+            <span>🎯 Tự động chấm điểm</span>
+            <span>💡 Giải chi tiết</span>
+          </div>
+          <div class="admin-link-wrapper">
+            <a href="admin.html" class="admin-link" title="Dành cho Giáo viên & Quản trị">
+              <span>🛡️ Bảng điều khiển Giáo viên</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         VIEW 2: QUIZ SELECTION SCREEN
+         ============================================== -->
+    <section id="view-quizzes" class="view hidden-view">
+      <!-- Top Navigation Header -->
+      <header class="top-nav glass-panel">
+        <div class="nav-left">
+          <div class="logo-mark">📚</div>
+          <div class="nav-title-group">
+            <span class="nav-brand">English 12 - Global Success</span>
+            <h2 class="nav-heading">Danh Sách Đề Kiểm Tra</h2>
+          </div>
+        </div>
+        <div class="nav-right">
+          <div class="user-pill glass-card-sm">
+            <span class="user-avatar" id="nav-user-avatar">🧑‍🎓</span>
+            <div class="user-info">
+              <span class="user-name" id="nav-user-name">Học sinh</span>
+              <span class="user-status-dot online"></span>
+            </div>
+          </div>
+          <button id="btn-logout" class="btn btn-glass-sm" title="Đăng xuất">
+            <span class="btn-icon">🚪</span>
+            <span class="btn-label">Đăng xuất</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="quizzes-content">
+        <!-- Welcome Hero Banner -->
+        <div class="welcome-banner glass-card">
+          <div class="banner-text">
+            <div class="greeting-tag">👋 Chào mừng bạn trở lại!</div>
+            <h3 class="banner-title" id="welcome-message">Sẵn sàng thử sức với các bài kiểm tra 15 phút?</h3>
+            <p class="banner-desc">
+              Các đề kiểm tra bao quát kiến thức Unit 1 (Life Stories), Unit 2 (A Multicultural World) và Unit 3 (Green Living) với các dạng Trọng âm, Tìm lỗi sai, Từ đồng/trái nghĩa và Ngữ pháp trọng tâm.
+            </p>
+          </div>
+          <div class="banner-stats">
+            <div class="stat-box">
+              <span class="stat-number" id="stats-completed-count">0/4</span>
+              <span class="stat-label">Đã hoàn thành</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-number" id="stats-avg-score">--</span>
+              <span class="stat-label">Điểm trung bình</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quizzes Grid -->
+        <div class="section-title-wrap">
+          <h3 class="section-title">
+            <span>📝 Chọn Đề Kiểm Tra</span>
+          </h3>
+          <span class="section-badge">4 Đề Chuẩn Cấu Trúc</span>
+        </div>
+
+        <!-- Quiz cards grid (2x2 on desktop, 1 col on mobile) -->
+        <div id="quizzes-grid" class="quizzes-grid">
+          <!-- Rendered dynamically by JavaScript -->
+          <div class="grid-loading">
+            <div class="loader-spinner"></div>
+            <p>Đang tải danh sách đề thi...</p>
+          </div>
+        </div>
+      </main>
+    </section>
+
+    <!-- ==============================================
+         VIEW 3: QUIZ TAKING SCREEN
+         ============================================== -->
+    <section id="view-quiz-taking" class="view hidden-view">
+      <!-- Quiz Header with Timer & Progress Bar -->
+      <header class="quiz-topbar glass-panel">
+        <div class="topbar-left">
+          <button id="btn-quit-quiz" class="btn btn-icon-round" title="Thoát bài thi">
+            <span>✕</span>
+          </button>
+          <div class="quiz-info-header">
+            <h2 id="taking-quiz-title" class="quiz-active-title">Đề Kiểm Tra 15 Phút</h2>
+            <div class="quiz-meta-row">
+              <span id="taking-quiz-unit" class="unit-tag">Unit 1-2-3</span>
+              <span id="question-counter-badge" class="counter-badge">Câu 1/10</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="topbar-center">
+          <div class="timer-container glass-card-sm" id="timer-box">
+            <span class="timer-icon" id="timer-icon">⏳</span>
+            <span id="timer-display" class="timer-digits">15:00</span>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <button id="btn-submit-top" class="btn btn-gradient-sm" title="Nộp bài ngay">
+            <span>Nộp Bài</span>
+            <span class="btn-icon">📤</span>
+          </button>
+        </div>
+
+        <!-- Animated Progress Bar for Timer -->
+        <div class="timer-progress-track">
+          <div id="timer-progress-bar" class="timer-progress-fill" style="width: 100%;"></div>
+        </div>
+      </header>
+
+      <!-- Main Question Area -->
+      <main class="quiz-taking-main">
+        <div class="question-container">
+          <!-- Question Card -->
+          <div class="question-card glass-card" id="question-card">
+            <!-- Header of Question: Type Indicator Badge & Number -->
+            <div class="question-header">
+              <div class="q-type-badge-wrap">
+                <span id="q-type-badge" class="q-badge badge-grammar">📝 Ngữ pháp</span>
+              </div>
+              <div class="q-index-tag">
+                <span id="q-current-num">Câu 1</span>
+                <span class="q-total-num" id="q-total-num">/ 10</span>
+              </div>
+            </div>
+
+            <!-- Question Text Body -->
+            <div class="question-body">
+              <p id="question-text" class="question-text">
+                Đang tải nội dung câu hỏi...
+              </p>
+            </div>
+
+            <!-- Options Grid (4 options: A, B, C, D) -->
+            <div id="options-container" class="options-grid">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Bottom Quiz Navigation Bar -->
+          <footer class="quiz-bottom-nav glass-panel">
+            <div class="nav-btn-col">
+              <button id="btn-prev-q" class="btn btn-glass" disabled>
+                <span class="btn-arrow">←</span>
+                <span>Câu trước</span>
+              </button>
+            </div>
+
+            <!-- Question Dots Navigation -->
+            <div class="dots-wrapper">
+              <div id="question-dots" class="dots-track">
+                <!-- Dots generated dynamically -->
+              </div>
+            </div>
+
+            <div class="nav-btn-col text-right">
+              <button id="btn-next-q" class="btn btn-glass">
+                <span>Câu tiếp</span>
+                <span class="btn-arrow">→</span>
+              </button>
+              <button id="btn-finish-quiz" class="btn btn-primary btn-glow hidden">
+                <span>Nộp bài</span>
+                <span class="btn-icon">✓</span>
+              </button>
+            </div>
+          </footer>
+        </div>
+      </main>
+    </section>
+
+    <!-- ==============================================
+         VIEW 4: RESULTS SCREEN
+         ============================================== -->
+    <section id="view-results" class="view hidden-view">
+      <div class="results-container">
+        <!-- Results Hero Card -->
+        <div class="result-hero-card glass-card">
+          <div class="result-celebration-icon" id="result-icon">🏆</div>
+          <h2 class="result-main-title">Kết Quả Bài Kiểm Tra</h2>
+          <p id="result-quiz-title" class="result-subtitle">English 12 - Kiểm Tra 15 Phút</p>
+
+          <!-- Speedometer / Animated SVG Circle -->
+          <div class="score-circle-wrapper">
+            <svg class="score-svg" viewBox="0 0 200 200">
+              <defs>
+                <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ec4899" />
+                  <stop offset="50%" stop-color="#8b5cf6" />
+                  <stop offset="100%" stop-color="#3b82f6" />
+                </linearGradient>
+              </defs>
+              <circle class="score-circle-bg" cx="100" cy="100" r="82" />
+              <circle id="score-circle-fill" class="score-circle-progress" cx="100" cy="100" r="82" />
+            </svg>
+            <div class="score-center-content">
+              <div class="score-digits-wrap">
+                <span id="score-number" class="score-counter">0.0</span>
+                <span class="score-max">/10</span>
+              </div>
+              <span id="score-percentage" class="score-pct-label">0%</span>
+            </div>
+          </div>
+
+          <!-- Grade Badge -->
+          <div class="grade-badge-wrap">
+            <div id="grade-badge" class="grade-badge grade-excellent">
+              <span class="grade-icon">🌟</span>
+              <span id="grade-text" class="grade-title">Xuất sắc</span>
+            </div>
+          </div>
+
+          <!-- Result Details Chips -->
+          <div class="result-stats-row">
+            <div class="stat-chip glass-card-sm">
+              <span class="chip-icon">🎯</span>
+              <div class="chip-content">
+                <span class="chip-value" id="res-correct-count">0/10</span>
+                <span class="chip-label">Câu trả lời đúng</span>
+              </div>
+            </div>
+
+            <div class="stat-chip glass-card-sm">
+              <span class="chip-icon">⏱️</span>
+              <div class="chip-content">
+                <span class="chip-value" id="res-time-spent">00:00</span>
+                <span class="chip-label">Thời gian làm bài</span>
+              </div>
+            </div>
+
+            <div class="stat-chip glass-card-sm">
+              <span class="chip-icon">📊</span>
+              <div class="chip-content">
+                <span class="chip-value" id="res-accuracy">0%</span>
+                <span class="chip-label">Độ chính xác</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="result-actions">
+            <button id="btn-back-quizzes" class="btn btn-primary btn-glow">
+              <span class="btn-icon">📋</span>
+              <span>Danh Sách Đề Thi</span>
+            </button>
+            <button id="btn-retry-quiz" class="btn btn-glass">
+              <span class="btn-icon">🔄</span>
+              <span>Làm Lại Đề Này</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Detailed Review Section -->
+        <div class="review-section glass-card">
+          <div class="review-header">
+            <div class="review-title-group">
+              <h3 class="review-title">📝 Xem Lại Chi Tiết Bài Làm</h3>
+              <p class="review-desc">Đối chiếu câu trả lời của bạn, đáp án chính xác và phần giải thích chi tiết</p>
+            </div>
+            <div class="review-filters">
+              <button class="filter-btn active" data-filter="all">Tất cả</button>
+              <button class="filter-btn" data-filter="wrong">Câu sai</button>
+              <button class="filter-btn" data-filter="correct">Câu đúng</button>
+            </div>
+          </div>
+
+          <!-- Review Accordion List -->
+          <div id="review-list" class="review-list">
+            <!-- Injected dynamically by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div> <!-- End #app -->
+
+  <!-- ==============================================
+       MODALS & DIALOGS
+       ============================================== -->
+  <!-- Confirmation Dialog Modal -->
+  <div id="confirm-modal" class="modal-overlay hidden" role="dialog" aria-modal="true">
+    <div class="modal-box glass-card scale-in">
+      <div class="modal-icon" id="confirm-modal-icon">⚠️</div>
+      <h3 class="modal-title" id="confirm-modal-title">Xác Nhận Nộp Bài</h3>
+      <p class="modal-desc" id="confirm-modal-desc">
+        Bạn vẫn còn câu hỏi chưa trả lời. Bạn có chắc chắn muốn nộp bài ngay bây giờ?
+      </p>
+      <div class="modal-actions">
+        <button id="btn-modal-cancel" class="btn btn-glass">Làm tiếp</button>
+        <button id="btn-modal-confirm" class="btn btn-primary btn-glow">Xác nhận nộp</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Application Script -->
+  <script src="app.js"></script>
+</body>
+</html>
